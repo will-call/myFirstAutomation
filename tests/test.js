@@ -1,30 +1,25 @@
-const functions = require('../resources/functions')
-const data = require('../resources/data')
-
+data = require('../test-assets/data')
+functionTemplate = require('../test-assets/functionTemplate')
+var pageObject = {}
 
 module.exports = {
     beforeEach: browser => {
-        weatherman = browser.page.weatherman()
-        weatherman.navigate()
+        pageObject = browser.page.pageObject()
+        pageObject.navigate()
     },
+
     after: browser => {
         browser.end()
     },
 
-    'Search by valid City' : browser => {
-        functions.searchForWeather(weatherman, 'Tucson')
-        weatherman
-            .waitForElementVisible('@weatherLocation', 5000, 'Valid City Found')
-            .expect.element('@weatherLocation').text.to.be.equal('Tucson')
+    'Test Case': browsr => {
+        functionTemplate(pageObject, data)
+
+        browser.element('css selector', 'selectorHere', function (res) {
+            if (res != null) {
+                // do something
+            }
+        })
     },
 
-    'Search by valid zip' : browser => {
-        functions.searchForWeather(weatherman, data.searchByZip.zip)
-        weatherman
-            .waitForElementVisible('@weatherLocation', 5000, 'Valid City Found')
-            .expect.element('@weatherLocation').text.to.be.equal(data.searchByZip.cityOutput)
-    }
-
-
 }
-let weatherman = {}
